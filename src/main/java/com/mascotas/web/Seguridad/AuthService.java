@@ -20,6 +20,7 @@ public class AuthService {
 
     public LoginResponseDTO login(LoginRequestDTO dto) {
 
+        System.err.println(dto.getCorreo());
         Usuario usuario = usuarioRepo.findByCorreo(dto.getCorreo())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -31,7 +32,7 @@ public class AuthService {
                 usuario.getCorreo(),
                 usuario.getTipoUsuario().getNombre()
         );
-
+        System.err.println(token);
         return new LoginResponseDTO(
             usuario.getId(),
             usuario.getNombre(),

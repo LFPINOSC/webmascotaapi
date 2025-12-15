@@ -16,7 +16,7 @@ import java.util.Date;
 public class JwtUtil {
 
     private final String SECRET = "MI_CLAVE_SUPER_SECRETA_256BITS_AQUI_CAMBIALA_123456";
-    private final long EXPIRACION = 1000 * 60 * 60 * 4; // 4 horas
+    private final long EXPIRACION = 1000 * 60 * 5;
 
     private Key getKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
