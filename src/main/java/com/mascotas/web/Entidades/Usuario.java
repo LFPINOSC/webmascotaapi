@@ -25,7 +25,6 @@ public class Usuario {
     private TipoUsuario tipoUsuario;
 
     @OneToMany(mappedBy = "dueño", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<Mascota> mascotas;
 
     @OneToMany(mappedBy = "veterinario", cascade = CascadeType.ALL)

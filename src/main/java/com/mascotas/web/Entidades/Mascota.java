@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -23,7 +24,8 @@ public class Mascota {
     private Raza raza;
 
     @ManyToOne
-    @JsonBackReference("dueño-mascotas")
+    @JoinColumn(name = "usuario_id")
+    @JsonIgnore
     private Usuario dueño;
 
     @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL)
