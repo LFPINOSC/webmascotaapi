@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.mascotas.web.Entidades.Mascota;
+import com.mascotas.web.Entidades.Usuario;
 import com.mascotas.web.Service.MascotaService;
 
 import java.util.List;
@@ -36,10 +37,8 @@ public class MascotaController {
 
         return service.listarPorCorreoDueño(correo);
     }
+    
 
-    @GetMapping("/{id}")
-    public Mascota obtener(@PathVariable Long id) {
-        return service.obtener(id);
-    }
+    
 }
 

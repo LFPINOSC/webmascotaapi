@@ -10,4 +10,9 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     List<Cita> findByMascotaId(Long mascotaId);
     List<Cita> findByVeterinarioCorreo(String correo);
     List<Cita> findByMascotaDueñoCorreo(String correo);
+  
+
+    List<Cita> findByMascotaIdAndVeterinarioCorreo(Long mascotaId, String correo);
+
+    List<Cita> findByMascotaIdAndMascotaDueñoCorreo(Long mascotaId, String correo);
 }

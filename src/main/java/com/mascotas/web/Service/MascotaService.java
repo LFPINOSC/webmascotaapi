@@ -37,10 +37,17 @@ public class MascotaService {
 
         return repo.save(m);
     }
+    
 
-    public Mascota obtener(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Mascota no encontrada"));
+   public List<Mascota> obtenerMascotasDelUsuario() {
+
+        Authentication auth = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        String correo = auth.getName(); // viene del token
+
+        return repo.findByDueñoCorreo(correo);
     }
 
     public List<Mascota> listar() {

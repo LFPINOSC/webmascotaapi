@@ -42,5 +42,9 @@ public class CitaController {
     public Cita obtener(@PathVariable Long id) {
         return service.obtener(id);
     }
+    @GetMapping("/mascota/{mascotaId}")
+    public List<Cita> obtenerPorMascota(@PathVariable Long mascotaId) {
+        return service.obtenerPorMascota(mascotaId);
+    }
 }
 

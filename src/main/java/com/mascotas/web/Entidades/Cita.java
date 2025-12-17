@@ -28,4 +28,8 @@ public class Cita {
     private Usuario veterinario;
 
     private String descripcion;
+     
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoCita estado;
 }

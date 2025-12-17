@@ -2,6 +2,9 @@ package com.mascotas.web.Service;
 
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.mascotas.web.Entidades.Cita;
@@ -20,10 +23,58 @@ public class CitaService {
     }
 
     public Cita obtener(Long id) {
-        return repo.findById(id)
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+
+        boolean esAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        boolean esVeterinario = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_VETERINARIO"));
+
+        Cita cita = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+
+        if (esAdmin) return cita;
+
+        if (esVeterinario) {
+            if (cita.getVeterinario() == null ||
+                !cita.getVeterinario().getCorreo().equals(correo)) {
+                throw new RuntimeException("No autorizado para ver esta cita");
+            }
+            return cita;
+        }
+
+        if (!cita.getMascota().getDueño().getCorreo().equals(correo)) {
+            throw new RuntimeException("No autorizado para ver esta cita");
+        }
+
+        return cita;
     }
 
+    public List<Cita> obtenerPorMascota(Long mascotaId) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+
+        boolean esAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        boolean esVeterinario = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_VETERINARIO"));
+
+        if (esAdmin) {
+            return repo.findByMascotaId(mascotaId);
+        }
+
+        if (esVeterinario) {
+            return repo.findByMascotaIdAndVeterinarioCorreo(mascotaId, correo);
+        }
+
+        // DUEÑO
+        return repo.findByMascotaIdAndMascotaDueñoCorreo(mascotaId, correo);
+    }
     public List<Cita> listar() {
         return repo.findAll();
     }
